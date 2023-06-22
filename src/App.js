@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import NotesList from './components/NotesList';
+import Search from './components/Search';
 
 const App = () => {
     const [notes, setNotes] = useState([
@@ -20,6 +21,8 @@ const App = () => {
             date: '15/04/2021',
         },
     ]);
+
+    const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
         const savedNotes = JSON.parse(
@@ -55,8 +58,13 @@ const App = () => {
         setNotes(newNotes);
     }
     return <div className="container">
-        <NotesList notes={notes} handleAddNote={addNote}
-        handleDeleteNote={deleteNote}/>
+        <Search handleSearchNote={setSearchText}/>
+        <NotesList 
+            notes={notes.filter((note) =>
+                note.text.toLowerCase().includes(searchText)
+            )}
+            handleAddNote={addNote}
+            handleDeleteNote={deleteNote}/>
     </div>
 };
 
